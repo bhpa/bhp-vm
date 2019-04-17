@@ -11,6 +11,12 @@ namespace Bhp.VM
 {
     public class ExecutionEngine : IDisposable
     {
+
+        /// <summary>
+        /// The max size in bytes allowed size for BigInteger
+        /// </summary>
+        public const int MaxSizeForBigInteger = 32;
+
         private readonly IScriptTable table;
         private readonly Dictionary<byte[], HashSet<uint>> break_points = new Dictionary<byte[], HashSet<uint>>(new HashComparer());
 
