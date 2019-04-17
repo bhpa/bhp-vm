@@ -102,7 +102,7 @@ namespace Bhp.VM
                 throw new ArgumentException();
             byte[] arg = new byte[api_bytes.Length + 1];
             arg[0] = (byte)api_bytes.Length;
-            Buffer.BlockCopy(api_bytes, 0, arg, 1, api_bytes.Length);
+            Unsafe.MemoryCopy(api_bytes, 0, arg, 1, api_bytes.Length);
             return Emit(OpCode.SYSCALL, arg);
         }
 
