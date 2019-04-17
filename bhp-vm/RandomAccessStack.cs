@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Bhp.VM
 {
@@ -11,6 +12,7 @@ namespace Bhp.VM
 
         public int Count => list.Count;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Clear()
         {
             list.Clear();
@@ -25,6 +27,7 @@ namespace Bhp.VM
                 stack.list.AddRange(list.Skip(list.Count - count));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerator<T> GetEnumerator()
         {
             return list.GetEnumerator();
@@ -32,7 +35,7 @@ namespace Bhp.VM
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return list.GetEnumerator();
         }
 
         public void Insert(int index, T item)
@@ -44,17 +47,21 @@ namespace Bhp.VM
         public T Peek(int index = 0)
         {
             if (index >= list.Count) throw new InvalidOperationException();
-            if (index < 0) index += list.Count;
-            if (index < 0) throw new InvalidOperationException();
-            index = list.Count - index - 1;
-            return list[index];
+            if (index < 0)
+            {
+                index += list.Count;
+                if (index < 0) throw new InvalidOperationException();
+            }
+            return list[(list.Count - index - 1)];
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T Pop()
         {
             return Remove(0);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Push(T item)
         {
             list.Add(item);
@@ -63,8 +70,11 @@ namespace Bhp.VM
         public T Remove(int index)
         {
             if (index >= list.Count) throw new InvalidOperationException();
-            if (index < 0) index += list.Count;
-            if (index < 0) throw new InvalidOperationException();
+            if (index < 0)
+            {
+                index += list.Count;
+                if (index < 0) throw new InvalidOperationException();
+            }
             index = list.Count - index - 1;
             T item = list[index];
             list.RemoveAt(index);
@@ -74,10 +84,12 @@ namespace Bhp.VM
         public void Set(int index, T item)
         {
             if (index >= list.Count) throw new InvalidOperationException();
-            if (index < 0) index += list.Count;
-            if (index < 0) throw new InvalidOperationException();
-            index = list.Count - index - 1;
-            list[index] = item;
+            if (index < 0)
+            {
+                index += list.Count;
+                if (index < 0) throw new InvalidOperationException();
+            }
+            list[list.Count - index - 1] = item;
         }
     }
 }

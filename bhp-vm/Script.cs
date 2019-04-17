@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace Bhp.VM
@@ -9,6 +9,7 @@ namespace Bhp.VM
 
         private readonly byte[] _value;
         private readonly ICrypto _crypto;
+        private readonly Dictionary<int, Instruction> _instructions = new Dictionary<int, Instruction>();
 
         /// <summary>
         /// Cached script hash
@@ -48,17 +49,7 @@ namespace Bhp.VM
                 return (OpCode)_value[index];
             }
         }
-
-        /// <summary>
-        /// Get Binary reader
-        /// </summary>
-        /// <returns>Returns the binary reader of the script</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public BinaryReader GetBinaryReader()
-        {
-            return new BinaryReader(new MemoryStream(_value, false));
-        }
-
+        
         /// <summary>
         /// Constructor
         /// </summary>
@@ -79,6 +70,22 @@ namespace Bhp.VM
         {
             _scriptHash = hash;
             _value = script;
+        }
+
+        public Instruction GetInstruction(int ip)
+        {
+            if (ip >= Length) return Instruction.RET;
+            if (!_instructions.TryGetValue(ip, out Instruction instruction))
+            {
+                instruction = new Instruction(_value, ip);
+                _instructions.Add(ip, instruction);
+            }
+            return instruction;
+        }
+
+        public static implicit operator byte[] (Script script)
+        {
+            return script._value;
         }
     }
 }
