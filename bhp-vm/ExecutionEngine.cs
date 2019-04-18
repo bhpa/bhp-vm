@@ -56,8 +56,7 @@ namespace Bhp.VM
         private int stackitem_count = 0;
         private bool is_stackitem_count_strict = true;
 
-        private readonly IScriptTable table;
-        private readonly Dictionary<byte[], HashSet<uint>> break_points = new Dictionary<byte[], HashSet<uint>>(new HashComparer());
+        private readonly IScriptTable table;        
 
         public IScriptContainer ScriptContainer { get; }
         public ICrypto Crypto { get; }
@@ -184,17 +183,7 @@ namespace Bhp.VM
         }
 
         #endregion
-
-        public void AddBreakPoint(byte[] script_hash, uint position)
-        {
-            if (!break_points.TryGetValue(script_hash, out HashSet<uint> hashset))
-            {
-                hashset = new HashSet<uint>();
-                break_points.Add(script_hash, hashset);
-            }
-            hashset.Add(position);
-        }
-
+        
         public virtual void Dispose()
         {
             InvocationStack.Clear();
@@ -1307,17 +1296,6 @@ namespace Bhp.VM
             if (script == null) return null;
             return LoadScript(new Script(hash, script), rvcount);
         }
-
-        public bool RemoveBreakPoint(byte[] script_hash, uint position)
-        {
-            if (!break_points.TryGetValue(script_hash, out HashSet<uint> hashset))
-                return false;
-            if (!hashset.Remove(position))
-                return false;
-            if (hashset.Count == 0)
-                break_points.Remove(script_hash);
-            return true;
-        }        
 
         protected virtual bool PostExecuteInstruction(Instruction instruction)
         {
