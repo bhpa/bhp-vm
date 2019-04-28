@@ -33,6 +33,7 @@ namespace Bhp.VM
             return list.GetEnumerator();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         IEnumerator IEnumerable.GetEnumerator()
         {
             return list.GetEnumerator();
@@ -89,7 +90,7 @@ namespace Bhp.VM
                 index += list.Count;
                 if (index < 0) throw new InvalidOperationException();
             }
-            list[list.Count - index - 1] = item;
+            list[(list.Count - index - 1)] = item;
         }
     }
 }

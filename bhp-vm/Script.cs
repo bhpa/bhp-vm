@@ -49,7 +49,7 @@ namespace Bhp.VM
                 return (OpCode)_value[index];
             }
         }
-        
+
         /// <summary>
         /// Constructor
         /// </summary>

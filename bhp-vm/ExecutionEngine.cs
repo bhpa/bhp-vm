@@ -56,7 +56,7 @@ namespace Bhp.VM
         private int stackitem_count = 0;
         private bool is_stackitem_count_strict = true;
 
-        private readonly IScriptTable table;        
+        private readonly IScriptTable table;
 
         public IScriptContainer ScriptContainer { get; }
         public ICrypto Crypto { get; }
@@ -65,7 +65,7 @@ namespace Bhp.VM
         public RandomAccessStack<StackItem> ResultStack { get; } = new RandomAccessStack<StackItem>();
         public ExecutionContext CurrentContext => InvocationStack.Peek();
         public byte[] EntryScriptHash { get; private set; }
-        public VMState State { get; protected set; } = VMState.BREAK;
+        public VMState State { get; internal protected set; } = VMState.BREAK;
 
         public ExecutionEngine(IScriptContainer container, ICrypto crypto, IScriptTable table = null, IInteropService service = null)
         {
@@ -96,7 +96,6 @@ namespace Bhp.VM
         /// <summary>
         /// Check if the is possible to overflow the MaxInvocationStack
         /// </summary>
-        /// <param name="stack">Stack</param>
         /// <returns>Return True if are allowed, otherwise False</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool CheckMaxInvocationStack() => InvocationStack.Count < MaxInvocationStackSize;
@@ -120,8 +119,8 @@ namespace Bhp.VM
         /// <summary>
         /// Check if the is possible to overflow the MaxStackSize
         /// </summary>
-        /// <param name="count">Stack item count</param>
         /// <param name="strict">Is stack count strict?</param>
+        /// <param name="count">Stack item count</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool CheckStackSize(bool strict, int count = 1)
@@ -182,7 +181,7 @@ namespace Bhp.VM
         }
 
         #endregion
-        
+
         public virtual void Dispose()
         {
             InvocationStack.Clear();
