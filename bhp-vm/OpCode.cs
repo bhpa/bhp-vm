@@ -732,16 +732,6 @@ namespace Bhp.VM
         VALUES = 0xCD,
 
 
-        // Stack isolation
-        /// <summary>
-        /// Current context is copied to the invocation stack (similar to CALL). Read return count (1-byte), parameter count (1-byte) and a 2-byte value n for jump to be performed.
-        /// </summary>
-        CALL_I = 0xE0,
-        /// <summary>
-        /// Reads a scripthash and executes the corresponding contract (similar to APPCALL). Read return count (1-byte), parameter count (1-byte) and a 20-byte scripthash.
-        /// </summary>       
-
-
         // Exceptions
         /// <summary>
         /// Halts the execution of the vm by setting VMState.FAULT.
