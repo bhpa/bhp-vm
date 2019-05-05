@@ -74,13 +74,7 @@ namespace Bhp.VM
             OperandSizeTable[(int)OpCode.JMPIF] = 2;
             OperandSizeTable[(int)OpCode.JMPIFNOT] = 2;
             OperandSizeTable[(int)OpCode.CALL] = 2;
-            OperandSizeTable[(int)OpCode.APPCALL] = 20;
-            OperandSizeTable[(int)OpCode.TAILCALL] = 20;
-            OperandSizeTable[(int)OpCode.CALL_I] = 4;
-            OperandSizeTable[(int)OpCode.CALL_E] = 22;
-            OperandSizeTable[(int)OpCode.CALL_ED] = 2;
-            OperandSizeTable[(int)OpCode.CALL_ET] = 22;
-            OperandSizeTable[(int)OpCode.CALL_EDT] = 2;
+            OperandSizeTable[(int)OpCode.CALL_I] = 4;            
         }
 
         private Instruction(OpCode opcode)

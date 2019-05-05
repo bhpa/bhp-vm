@@ -414,19 +414,11 @@ namespace Bhp.VM
         /// <summary>
         /// Stops the execution if invocation stack is empty.
         /// </summary>
-        RET = 0x66,
-        /// <summary>
-        /// Reads a scripthash and executes the corresponding contract. If scripthash is zero, performs dynamic invoke by taking scripthash from main stack.
-        /// </summary>
-        APPCALL = 0x67,
+        RET = 0x66,       
         /// <summary>
         /// Reads a string and executes the corresponding operation.
         /// </summary>
-        SYSCALL = 0x68,
-        /// <summary>
-        /// Reads a scripthash and executes the corresponding contract. If scripthash is zero, performs dynamic invoke by taking scripthash from main stack. Disposes the top item on invocation stack.
-        /// </summary>
-        TAILCALL = 0x69,
+        SYSCALL = 0x68,        
 
 
         // Stack
@@ -747,20 +739,7 @@ namespace Bhp.VM
         CALL_I = 0xE0,
         /// <summary>
         /// Reads a scripthash and executes the corresponding contract (similar to APPCALL). Read return count (1-byte), parameter count (1-byte) and a 20-byte scripthash.
-        /// </summary>
-        CALL_E = 0xE1,
-        /// <summary>
-        /// Reads a scripthash and executes the corresponding contract (similar to dynamic invoke APPCALL). Read return count (1-byte) and parameter count (1-byte). The 20-byte scripthash is pop from main stack.
-        /// </summary>
-        CALL_ED = 0xE2,
-        /// <summary>
-        /// Reads a scripthash and executes the corresponding contract (similar to TAILCALL). Read return count (1-byte), parameter count (1-byte) and a 20-byte scripthash. Disposes the top item on invocation stack.
-        /// </summary>
-        CALL_ET = 0xE3,
-        /// <summary>
-        /// Reads a scripthash and executes the corresponding contract (similar to dynamic invoke TAILCALL). Read return count (1-byte) and parameter count (1-byte). The 20-byte scripthash is pop from main stack. Disposes the top item on invocation stack.
-        /// </summary>
-        CALL_EDT = 0xE4,
+        /// </summary>       
 
 
         // Exceptions

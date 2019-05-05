@@ -30,14 +30,7 @@ namespace Bhp.VM
             if (arg != null)
                 writer.Write(arg);
             return this;
-        }
-
-        public ScriptBuilder EmitAppCall(byte[] scriptHash, bool useTailCall = false)
-        {
-            if (scriptHash.Length != 20)
-                throw new ArgumentException();
-            return Emit(useTailCall ? OpCode.TAILCALL : OpCode.APPCALL, scriptHash);
-        }
+        }        
 
         public ScriptBuilder EmitJump(OpCode op, short offset)
         {
