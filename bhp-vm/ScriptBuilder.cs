@@ -87,29 +87,9 @@ namespace Bhp.VM
             return EmitPush(Encoding.UTF8.GetBytes(data));
         }
 
-        public ScriptBuilder EmitSysCall(string api, bool compress = true)
+        public ScriptBuilder EmitSysCall(uint api)
         {
-            if (api == null) throw new ArgumentNullException(nameof(api));
-            if (api.Length == 0) throw new ArgumentException(nameof(api));
-
-            byte[] api_bytes = Encoding.ASCII.GetBytes(api);
-
-            if (compress)
-            {
-                using (var sha = SHA256.Create())
-                    api_bytes = sha.ComputeHash(api_bytes);
-                Array.Resize(ref api_bytes, 4);
-            }
-            else
-            {
-                if (api_bytes.Length > 252)
-                    throw new ArgumentException(nameof(api));
-            }
-
-            byte[] arg = new byte[api_bytes.Length + 1];
-            arg[0] = (byte)api_bytes.Length;
-            Unsafe.MemoryCopy(api_bytes, 0, arg, 1, api_bytes.Length);
-            return Emit(OpCode.SYSCALL, arg);
+            return Emit(OpCode.SYSCALL, BitConverter.GetBytes(api));
         }
 
         public byte[] ToArray()
