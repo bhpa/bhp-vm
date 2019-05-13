@@ -271,7 +271,7 @@ namespace Bhp.VM
                             return true;
                         }
                     case OpCode.CALL:
-                        {                            
+                        {
                             ExecutionContext context_call = context.Clone();
                             context_call.InstructionPointer = context.InstructionPointer + instruction.TokenI16;
                             if (context_call.InstructionPointer < 0 || context_call.InstructionPointer > context_call.Script.Length) return false;
@@ -306,8 +306,7 @@ namespace Bhp.VM
                         }
                     case OpCode.SYSCALL:
                         {
-                            if (instruction.Operand.Length > 252) return false;
-                            if (Service?.Invoke(instruction.Operand, this) != true || !CheckStackSize(false, int.MaxValue))
+                            if (Service?.Invoke(instruction.TokenU32, this) != true || !CheckStackSize(false, int.MaxValue))
                                 return false;
                             break;
                         }
