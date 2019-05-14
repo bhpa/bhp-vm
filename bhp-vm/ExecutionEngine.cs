@@ -64,6 +64,13 @@ namespace Bhp.VM
         public ExecutionContext CurrentContext => InvocationStack.Peek();
         public byte[] EntryScriptHash { get; private set; }
         public VMState State { get; internal protected set; } = VMState.BREAK;
+        
+        #region Events
+
+        public event EventHandler<ExecutionContext> ContextLoaded;
+        public event EventHandler<ExecutionContext> ContextUnloaded;
+
+        #endregion
 
         public ExecutionEngine(IScriptContainer container, ICrypto crypto, IInteropService service = null)
         {
@@ -298,6 +305,7 @@ namespace Bhp.VM
                                 context_pop.AltStack.CopyTo(CurrentContext.AltStack);
                             }
                             CheckStackSize(false, 0);
+                            ContextUnloaded?.Invoke(this, context_pop);
                             if (InvocationStack.Count == 0)
                             {
                                 State = VMState.HALT;
@@ -1187,13 +1195,14 @@ namespace Bhp.VM
             return true;
         }
 
-        protected virtual void LoadContext(ExecutionContext context)
+        private void LoadContext(ExecutionContext context)
         {
             if (InvocationStack.Count >= MaxInvocationStackSize)
                 throw new InvalidOperationException();
             if (EntryScriptHash is null)
                 EntryScriptHash = context.ScriptHash;
             InvocationStack.Push(context);
+            ContextLoaded?.Invoke(this, context);
         }
 
         public ExecutionContext LoadScript(byte[] script, byte[] callingScriptHash = null, int rvcount = -1)
@@ -1203,14 +1212,10 @@ namespace Bhp.VM
             return context;
         }
 
-        protected virtual bool PostExecuteInstruction(Instruction instruction)
-        {
-            return true;
-        }
+        protected virtual bool OnSysCall(uint method) => false;
 
-        protected virtual bool PreExecuteInstruction()
-        {
-            return true;
-        }
+        protected virtual bool PostExecuteInstruction(Instruction instruction) => true;
+
+        protected virtual bool PreExecuteInstruction() => true;
     }
 }
