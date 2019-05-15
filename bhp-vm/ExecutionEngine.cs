@@ -57,8 +57,7 @@ namespace Bhp.VM
         private bool is_stackitem_count_strict = true;
 
         public IScriptContainer ScriptContainer { get; }
-        public ICrypto Crypto { get; }
-        public IInteropService Service { get; }
+        public ICrypto Crypto { get; }        
         public RandomAccessStack<ExecutionContext> InvocationStack { get; } = new RandomAccessStack<ExecutionContext>();
         public RandomAccessStack<StackItem> ResultStack { get; } = new RandomAccessStack<StackItem>();
         public ExecutionContext CurrentContext => InvocationStack.Peek();
@@ -71,14 +70,7 @@ namespace Bhp.VM
         public event EventHandler<ExecutionContext> ContextUnloaded;
 
         #endregion
-
-        public ExecutionEngine(IScriptContainer container, ICrypto crypto, IInteropService service = null)
-        {
-            this.ScriptContainer = container;
-            this.Crypto = crypto;
-            this.Service = service;
-        }
-
+        
         #region Limits
 
         /// <summary>
@@ -314,7 +306,7 @@ namespace Bhp.VM
                         }
                     case OpCode.SYSCALL:
                         {
-                            if (Service?.Invoke(instruction.TokenU32, this) != true || !CheckStackSize(false, int.MaxValue))
+                            if (!OnSysCall(instruction.TokenU32) || !CheckStackSize(false, int.MaxValue))
                                 return false;
                             break;
                         }
