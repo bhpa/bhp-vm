@@ -176,11 +176,12 @@ namespace Bhp.VM
             InvocationStack.Clear();
         }
 
-        public void Execute()
+        public VMState Execute()
         {
             State &= ~VMState.BREAK;
-            while (!State.HasFlag(VMState.HALT) && !State.HasFlag(VMState.FAULT) && !State.HasFlag(VMState.BREAK))
+            while (!State.HasFlag(VMState.HALT) && !State.HasFlag(VMState.FAULT))
                 ExecuteNext();
+            return State;
         }
 
         internal protected void ExecuteNext()
