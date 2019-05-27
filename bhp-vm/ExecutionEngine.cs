@@ -57,20 +57,20 @@ namespace Bhp.VM
         private bool is_stackitem_count_strict = true;
 
         public IScriptContainer ScriptContainer { get; }
-        public ICrypto Crypto { get; }        
+        public ICrypto Crypto { get; }
         public RandomAccessStack<ExecutionContext> InvocationStack { get; } = new RandomAccessStack<ExecutionContext>();
         public RandomAccessStack<StackItem> ResultStack { get; } = new RandomAccessStack<StackItem>();
         public ExecutionContext CurrentContext => InvocationStack.Peek();
         public byte[] EntryScriptHash { get; private set; }
         public VMState State { get; internal protected set; } = VMState.BREAK;
-        
+
         #region Events
 
         public event EventHandler<ExecutionContext> ContextLoaded;
         public event EventHandler<ExecutionContext> ContextUnloaded;
 
         #endregion
-        
+
         #region Limits
 
         /// <summary>
@@ -1205,9 +1205,9 @@ namespace Bhp.VM
             ContextLoaded?.Invoke(this, context);
         }
 
-        public ExecutionContext LoadScript(byte[] script, byte[] callingScriptHash = null, int rvcount = -1)
+        public ExecutionContext LoadScript(byte[] script, int rvcount = -1)
         {
-            ExecutionContext context = new ExecutionContext(new Script(Crypto, script), callingScriptHash, rvcount);
+            ExecutionContext context = new ExecutionContext(new Script(Crypto, script), CurrentContext?.Script, rvcount);
             LoadContext(context);
             return context;
         }
