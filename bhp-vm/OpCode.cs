@@ -640,38 +640,8 @@ namespace Bhp.VM
         /// </summary>
         WITHIN = 0xA5,
 
-
-        // Crypto
-        //RIPEMD160 = 0xA6, // The input is hashed using RIPEMD-160.
-        /// <summary>
-        /// The input is hashed using SHA-1.
-        /// </summary>
-        SHA1 = 0xA7,
-        /// <summary>
-        /// The input is hashed using SHA-256.
-        /// </summary>
-        SHA256 = 0xA8,
-        /// <summary>
-        /// The input is hashed using Hash160: first with SHA-256 and then with RIPEMD-160.
-        /// </summary>
-        HASH160 = 0xA9,
-        /// <summary>
-        /// The input is hashed using Hash256: twice with SHA-256.
-        /// </summary>
-        HASH256 = 0xAA,
-        /// <summary>
-        /// The publickey and signature are taken from main stack. Verifies if transaction was signed by given publickey and a boolean output is put on top of the main stack.
-        /// </summary>
-        CHECKSIG = 0xAC,
-        /// <summary>
-        /// The publickey, signature and message are taken from main stack. Verifies if given message was signed by given publickey and a boolean output is put on top of the main stack.
-        /// </summary>
-        VERIFY = 0xAD,
-        /// <summary>
-        /// A set of n public keys (an array or value n followed by n pubkeys) is validated against a set of m signatures (an array or value m followed by m signatures). Verify transaction as multisig and a boolean output is put on top of the main stack.
-        /// </summary>
-        CHECKMULTISIG = 0xAE,
-
+        //Reserved = 0xAC,
+        //Reserved = 0xAE,
 
         // Array
         /// <summary>
