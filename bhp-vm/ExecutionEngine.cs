@@ -160,6 +160,7 @@ namespace Bhp.VM
                             if (counted.Any(p => ReferenceEquals(p, map)))
                                 continue;
                             counted.Add(map);
+                            count += map.Count; // Count key items
                             foreach (StackItem subitem in map.Values)
                                 queue.Enqueue(subitem);
                             break;
@@ -1114,9 +1115,11 @@ namespace Bhp.VM
                                     int index = (int)key.GetBigInteger();
                                     if (index < 0 || index >= array.Count) return false;
                                     array.RemoveAt(index);
+                                    CheckStackSize(false, -1);
                                     break;
                                 case Map map:
-                                    map.Remove(key);
+                                    if (map.Remove(key))
+                                        CheckStackSize(false, -2);
                                     break;
                                 default:
                                     return false;
