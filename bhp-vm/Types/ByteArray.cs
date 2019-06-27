@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Linq;
+using System.Diagnostics;
 
 namespace Bhp.VM.Types
 {
+    [DebuggerDisplay("Type={GetType().Name}, Value={System.BitConverter.ToString(value).Replace(\"-\", string.Empty)}")]
     public class ByteArray : StackItem
     {
         private byte[] value;
@@ -25,7 +26,14 @@ namespace Bhp.VM.Types
             {
                 return false;
             }
-            return value.SequenceEqual(bytes_other);
+            return Unsafe.MemoryEquals(value, bytes_other);
+        }
+
+        public override bool GetBoolean()
+        {
+            if (value.Length > ExecutionEngine.MaxSizeForBigInteger)
+                return true;
+            return Unsafe.NotZero(value);
         }
 
         public override byte[] GetByteArray()

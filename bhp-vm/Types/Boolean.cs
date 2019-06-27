@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Linq;
+using System.Diagnostics;
 using System.Numerics;
 
 namespace Bhp.VM.Types
 {
+    [DebuggerDisplay("Type={GetType().Name}, Value={value}")]
     public class Boolean : StackItem
     {
         private static readonly byte[] TRUE = { 1 };
-        private static readonly byte[] FALSE = new byte[0];
+        private static readonly byte[] FALSE = { 0 };
 
         private bool value;
 
@@ -30,7 +31,7 @@ namespace Bhp.VM.Types
             {
                 return false;
             }
-            return GetByteArray().SequenceEqual(bytes_other);
+            return Unsafe.MemoryEquals(GetByteArray(), bytes_other);
         }
 
         public override BigInteger GetBigInteger()

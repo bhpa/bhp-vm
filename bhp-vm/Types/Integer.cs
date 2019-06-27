@@ -1,11 +1,14 @@
 ﻿using System;
-using System.Linq;
+using System.Diagnostics;
 using System.Numerics;
 
 namespace Bhp.VM.Types
 {
+    [DebuggerDisplay("Type={GetType().Name}, Value={value}")]
     public class Integer : StackItem
     {
+        private static readonly byte[] ZeroBytes = new byte[0];
+
         private BigInteger value;
 
         public Integer(BigInteger value)
@@ -27,7 +30,7 @@ namespace Bhp.VM.Types
             {
                 return false;
             }
-            return GetByteArray().SequenceEqual(bytes_other);
+            return Unsafe.MemoryEquals(GetByteArray(), bytes_other);
         }
 
         public override BigInteger GetBigInteger()
@@ -37,12 +40,20 @@ namespace Bhp.VM.Types
 
         public override bool GetBoolean()
         {
-            return value != BigInteger.Zero;
+            return !value.IsZero;
         }
 
         public override byte[] GetByteArray()
         {
-            return value.ToByteArray();
+            return value.IsZero ? ZeroBytes : value.ToByteArray();
+        }
+
+        private int _length = -1;
+        public override int GetByteLength()
+        {
+            if (_length == -1)
+                _length = GetByteArray().Length;
+            return _length;
         }
     }
 }

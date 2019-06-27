@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Bhp.VM.Types
 {
+    [DebuggerDisplay("Type={GetType().Name}, Count={Count}")]
     public class Struct : Array
     {
         public Struct() : this(new List<StackItem>()) { }
