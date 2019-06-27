@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace Bhp.VM
 {
+    [DebuggerDisplay("Length={Length}")]
     public class Script
     {
         private byte[] _scriptHash = null;
