@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Numerics;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace Bhp.VM
@@ -15,7 +14,7 @@ namespace Bhp.VM
 
         public ScriptBuilder()
         {
-            this.writer = new BinaryWriter(ms);
+            writer = new BinaryWriter(ms);
         }
 
         public void Dispose()
@@ -30,7 +29,7 @@ namespace Bhp.VM
             if (arg != null)
                 writer.Write(arg);
             return this;
-        }        
+        }
 
         public ScriptBuilder EmitJump(OpCode op, short offset)
         {
