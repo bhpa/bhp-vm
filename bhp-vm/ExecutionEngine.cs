@@ -60,16 +60,11 @@ namespace Bhp.VM
         public ICrypto Crypto { get; }
         public RandomAccessStack<ExecutionContext> InvocationStack { get; } = new RandomAccessStack<ExecutionContext>();
         public RandomAccessStack<StackItem> ResultStack { get; } = new RandomAccessStack<StackItem>();
-        public ExecutionContext CurrentContext => InvocationStack.Peek();
-        public byte[] EntryScriptHash { get; private set; }
+
+        public ExecutionContext CurrentContext => InvocationStack.Count > 0 ? InvocationStack.Peek() : null;
+        public ExecutionContext EntryContext => InvocationStack.Count > 0 ? InvocationStack.Peek(InvocationStack.Count - 1) : null;
+
         public VMState State { get; internal protected set; } = VMState.BREAK;
-
-        #region Events
-
-        public event EventHandler<ExecutionContext> ContextLoaded;
-        public event EventHandler<ExecutionContext> ContextUnloaded;
-
-        #endregion
 
         #region Limits
 
@@ -171,6 +166,10 @@ namespace Bhp.VM
         }
 
         #endregion
+
+        protected virtual void ContextUnloaded(ExecutionContext context)
+        {
+        }
 
         public virtual void Dispose()
         {
@@ -300,11 +299,11 @@ namespace Bhp.VM
                                 context_pop.AltStack.CopyTo(CurrentContext.AltStack);
                             }
                             CheckStackSize(false, 0);
-                            ContextUnloaded?.Invoke(this, context_pop);
                             if (InvocationStack.Count == 0)
                             {
                                 State = VMState.HALT;
                             }
+                            ContextUnloaded(context_pop);
                             return true;
                         }
                     case OpCode.SYSCALL:
@@ -1076,14 +1075,11 @@ namespace Bhp.VM
             return true;
         }
 
-        private void LoadContext(ExecutionContext context)
+        protected virtual void LoadContext(ExecutionContext context)
         {
             if (InvocationStack.Count >= MaxInvocationStackSize)
                 throw new InvalidOperationException();
-            if (EntryScriptHash is null)
-                EntryScriptHash = context.ScriptHash;
             InvocationStack.Push(context);
-            ContextLoaded?.Invoke(this, context);
         }
 
         public ExecutionContext LoadScript(byte[] script, int rvcount = -1)

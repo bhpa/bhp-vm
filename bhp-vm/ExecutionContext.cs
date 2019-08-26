@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace Bhp.VM
@@ -6,6 +8,8 @@ namespace Bhp.VM
     [DebuggerDisplay("RVCount={RVCount}, InstructionPointer={InstructionPointer}")]
     public class ExecutionContext
     {
+        private readonly Dictionary<Type, object> states = new Dictionary<Type, object>();
+
         /// <summary>
         /// Number of items to be returned
         /// </summary>
@@ -93,6 +97,28 @@ namespace Bhp.VM
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Instruction GetInstruction(int ip) => Script.GetInstruction(ip);
+
+        public T GetState<T>()
+        {
+            return (T)states[typeof(T)];
+        }
+
+        public bool TryGetState<T>(out T value)
+        {
+            if (states.TryGetValue(typeof(T), out var val))
+            {
+                value = (T)val;
+                return true;
+            }
+
+            value = default;
+            return false;
+        }
+
+        public void SetState<T>(T state)
+        {
+            states[typeof(T)] = state;
+        }
 
         internal bool MoveNext()
         {
