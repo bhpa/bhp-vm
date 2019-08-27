@@ -454,6 +454,7 @@ namespace Bhp.VM
                         {
                             int count = (int)context.EvaluationStack.Pop().GetBigInteger();
                             if (count < 0) return false;
+                            if (count > MaxItemSize) count = (int)MaxItemSize;
                             int index = (int)context.EvaluationStack.Pop().GetBigInteger();
                             if (index < 0) return false;
                             byte[] x = context.EvaluationStack.Pop().GetByteArray();
