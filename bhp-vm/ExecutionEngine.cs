@@ -247,6 +247,12 @@ namespace Bhp.VM
                             if (!CheckStackSize(true)) return false;
                             break;
                         }
+                    case OpCode.PUSHNULL:
+                        {
+                            context.EvaluationStack.Push(StackItem.Null);
+                            if (!CheckStackSize(true)) return false;
+                            break;
+                        }
 
                     // Control
                     case OpCode.NOP: break;
@@ -335,6 +341,13 @@ namespace Bhp.VM
                     case OpCode.FROMALTSTACK:
                         {
                             context.EvaluationStack.Push(context.AltStack.Pop());
+                            break;
+                        }
+                    case OpCode.ISNULL:
+                        {
+                            bool b = context.EvaluationStack.Peek().IsNull;
+                            context.EvaluationStack.Set(0, b);
+                            CheckStackSize(false, 0);
                             break;
                         }
                     case OpCode.XDROP:
