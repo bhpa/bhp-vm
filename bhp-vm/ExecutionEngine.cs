@@ -1095,7 +1095,7 @@ namespace Bhp.VM
 
         public ExecutionContext LoadScript(byte[] script, int rvcount = -1)
         {
-            ExecutionContext context = new ExecutionContext(new Script(Crypto, script), CurrentContext?.Script, rvcount);
+            ExecutionContext context = new ExecutionContext(new Script(Crypto, script), rvcount);
             LoadContext(context);
             return context;
         }
