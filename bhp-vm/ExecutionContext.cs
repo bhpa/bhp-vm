@@ -76,23 +76,22 @@ namespace Bhp.VM
         /// <param name="script">Script</param>
         /// <param name="callingScriptHash">Script hash of the calling script</param>
         /// <param name="rvcount">Number of items to be returned</param>
-        internal ExecutionContext(Script script, byte[] callingScriptHash, int rvcount)
-           : this(script, callingScriptHash, rvcount, new RandomAccessStack<StackItem>(), new RandomAccessStack<StackItem>())
+        internal ExecutionContext(Script script, int rvcount)
+           : this(script, rvcount, new RandomAccessStack<StackItem>(), new RandomAccessStack<StackItem>())
         {
         }
 
-        private ExecutionContext(Script script, byte[] callingScriptHash, int rvcount, RandomAccessStack<StackItem> stack, RandomAccessStack<StackItem> alt)
+        private ExecutionContext(Script script, int rvcount, RandomAccessStack<StackItem> stack, RandomAccessStack<StackItem> alt)
         {
             this.RVCount = rvcount;
             this.Script = script;
             this.EvaluationStack = stack;
             this.AltStack = alt;
-            this.CallingScriptHash = callingScriptHash;
         }
 
         internal ExecutionContext Clone()
         {
-            return new ExecutionContext(Script, ScriptHash, 0, EvaluationStack, AltStack);
+            return new ExecutionContext(Script, 0, EvaluationStack, AltStack);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
