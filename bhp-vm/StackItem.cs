@@ -4,16 +4,15 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Text;
 using Array = Bhp.VM.Types.Array;
-using Boolean = Bhp.VM.Types.Boolean;
 
 namespace Bhp.VM
 {
     public abstract class StackItem : IEquatable<StackItem>
     {
         public bool IsNull => this is Null;
-
+        public static StackItem False { get; } = 0;
         public static StackItem Null { get; } = new Null();
-
+        public static StackItem True { get; } = 1;
         public abstract bool Equals(StackItem other);
 
         public sealed override bool Equals(object obj)
@@ -89,7 +88,7 @@ namespace Bhp.VM
 
         public static implicit operator StackItem(bool value)
         {
-            return new Boolean(value);
+            return value ? True : False;
         }
 
         public static implicit operator StackItem(byte[] value)
