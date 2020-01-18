@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Bhp.VM
 {
@@ -6,12 +8,12 @@ namespace Bhp.VM
     {
         public bool Equals(byte[] x, byte[] y)
         {
-            return Unsafe.MemoryEquals(x, y);
+            return x.SequenceEqual(y);
         }
 
         public int GetHashCode(byte[] obj)
         {
-            return Unsafe.ToInt32(obj, 0);
+            return BitConverter.ToInt32(obj, 0);
         }
     }
 }

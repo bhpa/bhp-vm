@@ -7,7 +7,6 @@
     <Version>1.2.0.0</Version>
     <Authors>The Bhp Project</Authors>
     <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyName>Bhp.VM</AssemblyName>
     <PackageId>Bhp.VM</PackageId>
     <PackageTags>BHP;Blockchain Hash Power;VM</PackageTags>
@@ -16,7 +15,6 @@
     <RepositoryUrl>https://github.com/BhpAlpha/bhp-vm.git</RepositoryUrl>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.0</NetStandardImplicitPackageVersion>
     <RootNamespace>Bhp.VM</RootNamespace>
-    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.6|AnyCPU'">

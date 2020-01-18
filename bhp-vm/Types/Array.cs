@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Bhp.VM.Types
 {
-    [DebuggerDisplay("Type={GetType().Name}, Count={Count}")]
     public class Array : StackItem, ICollection, IList<StackItem>
     {
         protected readonly List<StackItem> _array;
@@ -27,7 +25,7 @@ namespace Bhp.VM.Types
 
         public Array(IEnumerable<StackItem> value)
         {
-            _array = value as List<StackItem> ?? value.ToList();
+            this._array = value as List<StackItem> ?? value.ToList();
         }
 
         public void Add(StackItem item)

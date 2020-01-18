@@ -14,7 +14,7 @@ namespace Bhp.VM
 
         public ScriptBuilder()
         {
-            writer = new BinaryWriter(ms);
+            this.writer = new BinaryWriter(ms);
         }
 
         public void Dispose()
@@ -29,6 +29,13 @@ namespace Bhp.VM
             if (arg != null)
                 writer.Write(arg);
             return this;
+        }
+
+        public ScriptBuilder EmitAppCall(byte[] scriptHash, bool useTailCall = false)
+        {
+            if (scriptHash.Length != 20)
+                throw new ArgumentException();
+            return Emit(useTailCall ? OpCode.TAILCALL : OpCode.APPCALL, scriptHash);
         }
 
         public ScriptBuilder EmitJump(OpCode op, short offset)
@@ -86,16 +93,17 @@ namespace Bhp.VM
             return EmitPush(Encoding.UTF8.GetBytes(data));
         }
 
-        public ScriptBuilder EmitRaw(byte[] arg = null)
+        public ScriptBuilder EmitSysCall(string api)
         {
-            if (arg != null)
-                writer.Write(arg);
-            return this;
-        }
-
-        public ScriptBuilder EmitSysCall(uint api)
-        {
-            return Emit(OpCode.SYSCALL, BitConverter.GetBytes(api));
+            if (api == null)
+                throw new ArgumentNullException();
+            byte[] api_bytes = Encoding.ASCII.GetBytes(api);
+            if (api_bytes.Length == 0 || api_bytes.Length > 252)
+                throw new ArgumentException();
+            byte[] arg = new byte[api_bytes.Length + 1];
+            arg[0] = (byte)api_bytes.Length;
+            Buffer.BlockCopy(api_bytes, 0, arg, 1, api_bytes.Length);
+            return Emit(OpCode.SYSCALL, arg);
         }
 
         public byte[] ToArray()

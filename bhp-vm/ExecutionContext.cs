@@ -1,128 +1,63 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
+using System.IO;
 
 namespace Bhp.VM
 {
-    [DebuggerDisplay("RVCount={RVCount}, InstructionPointer={InstructionPointer}")]
-    public class ExecutionContext
+    public class ExecutionContext : IDisposable
     {
-        private readonly Dictionary<Type, object> states = new Dictionary<Type, object>();
+        public readonly byte[] Script;
+        internal readonly int RVCount;
+        internal readonly BinaryReader OpReader;
+        private readonly ICrypto crypto;
 
-        /// <summary>
-        /// Number of items to be returned
-        /// </summary>
-        internal int RVCount { get; }
+        public RandomAccessStack<StackItem> EvaluationStack { get; } = new RandomAccessStack<StackItem>();
+        public RandomAccessStack<StackItem> AltStack { get; } = new RandomAccessStack<StackItem>();
 
-        /// <summary>
-        /// Script
-        /// </summary>
-        public Script Script { get; }
-
-        /// <summary>
-        /// Evaluation stack
-        /// </summary>
-        public RandomAccessStack<StackItem> EvaluationStack { get; }
-
-        /// <summary>
-        /// Alternative stack
-        /// </summary>
-        public RandomAccessStack<StackItem> AltStack { get; }
-
-        /// <summary>
-        /// Instruction pointer
-        /// </summary>
-        public int InstructionPointer { get; set; }
-
-        public Instruction CurrentInstruction
+        public int InstructionPointer
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
-                return GetInstruction(InstructionPointer);
+                return (int)OpReader.BaseStream.Position;
+            }
+            set
+            {
+                OpReader.BaseStream.Seek(value, SeekOrigin.Begin);
             }
         }
 
-        /// <summary>
-        /// Next instruction
-        /// </summary>
-        public Instruction NextInstruction
+        public OpCode NextInstruction
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
-                return GetInstruction(InstructionPointer + CurrentInstruction.Size);
+                var position = OpReader.BaseStream.Position;
+                if (position >= Script.Length) return OpCode.RET;
+                
+                return (OpCode)Script[position];
             }
         }
-
-        /// <summary>
-        /// Cached script hash
-        /// </summary>
+        
+        private byte[] _script_hash = null;
         public byte[] ScriptHash
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
-                return Script.ScriptHash;
+                if (_script_hash == null)
+                    _script_hash = crypto.Hash160(Script);
+                return _script_hash;
             }
         }
 
-        public byte[] CallingScriptHash { get; }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="script">Script</param>
-        /// <param name="callingScriptHash">Script hash of the calling script</param>
-        /// <param name="rvcount">Number of items to be returned</param>
-        internal ExecutionContext(Script script, int rvcount)
-           : this(script, rvcount, new RandomAccessStack<StackItem>(), new RandomAccessStack<StackItem>())
+        internal ExecutionContext(ExecutionEngine engine, byte[] script, int rvcount)
         {
-        }
-
-        private ExecutionContext(Script script, int rvcount, RandomAccessStack<StackItem> stack, RandomAccessStack<StackItem> alt)
-        {
-            this.RVCount = rvcount;
             this.Script = script;
-            this.EvaluationStack = stack;
-            this.AltStack = alt;
+            this.RVCount = rvcount;
+            this.OpReader = new BinaryReader(new MemoryStream(script, false));
+            this.crypto = engine.Crypto;
         }
 
-        internal ExecutionContext Clone()
+        public void Dispose()
         {
-            return new ExecutionContext(Script, 0, EvaluationStack, AltStack);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private Instruction GetInstruction(int ip) => Script.GetInstruction(ip);
-
-        public T GetState<T>()
-        {
-            return (T)states[typeof(T)];
-        }
-
-        public bool TryGetState<T>(out T value)
-        {
-            if (states.TryGetValue(typeof(T), out var val))
-            {
-                value = (T)val;
-                return true;
-            }
-
-            value = default;
-            return false;
-        }
-
-        public void SetState<T>(T state)
-        {
-            states[typeof(T)] = state;
-        }
-
-        internal bool MoveNext()
-        {
-            InstructionPointer += CurrentInstruction.Size;
-            return InstructionPointer < Script.Length;
+            OpReader.Dispose();
         }
     }
 }

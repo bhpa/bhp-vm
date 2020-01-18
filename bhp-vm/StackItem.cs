@@ -1,18 +1,16 @@
 ﻿using Bhp.VM.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using System.Text;
 using Array = Bhp.VM.Types.Array;
+using Boolean = Bhp.VM.Types.Boolean;
 
 namespace Bhp.VM
 {
     public abstract class StackItem : IEquatable<StackItem>
     {
-        public bool IsNull => this is Null;
-        public static StackItem False { get; } = 0;
-        public static StackItem Null { get; } = new Null();
-        public static StackItem True { get; } = 1;
         public abstract bool Equals(StackItem other);
 
         public sealed override bool Equals(object obj)
@@ -27,7 +25,6 @@ namespace Bhp.VM
         public static StackItem FromInterface<T>(T value)
             where T : class
         {
-            if (value is null) return Null;
             return new InteropInterface<T>(value);
         }
 
@@ -36,14 +33,12 @@ namespace Bhp.VM
             return new BigInteger(GetByteArray());
         }
 
-        public abstract bool GetBoolean();
+        public virtual bool GetBoolean()
+        {
+            return GetByteArray().Any(p => p != 0);
+        }
 
         public abstract byte[] GetByteArray();
-
-        public virtual int GetByteLength()
-        {
-            return GetByteArray().Length;
-        }
 
         public override int GetHashCode()
         {
@@ -88,7 +83,7 @@ namespace Bhp.VM
 
         public static implicit operator StackItem(bool value)
         {
-            return value ? True : False;
+            return new Boolean(value);
         }
 
         public static implicit operator StackItem(byte[] value)

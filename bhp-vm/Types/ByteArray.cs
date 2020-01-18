@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Linq;
 
 namespace Bhp.VM.Types
 {
-    [DebuggerDisplay("Type={GetType().Name}, Value={System.BitConverter.ToString(value).Replace(\"-\", string.Empty)}")]
     public class ByteArray : StackItem
     {
-        private readonly byte[] value;
+        private byte[] value;
 
         public ByteArray(byte[] value)
         {
@@ -16,7 +15,7 @@ namespace Bhp.VM.Types
         public override bool Equals(StackItem other)
         {
             if (ReferenceEquals(this, other)) return true;
-            if (other is null) return false;
+            if (ReferenceEquals(null, other)) return false;
             byte[] bytes_other;
             try
             {
@@ -26,14 +25,7 @@ namespace Bhp.VM.Types
             {
                 return false;
             }
-            return Unsafe.MemoryEquals(value, bytes_other);
-        }
-
-        public override bool GetBoolean()
-        {
-            if (value.Length > ExecutionEngine.MaxSizeForBigInteger)
-                return true;
-            return Unsafe.NotZero(value);
+            return value.SequenceEqual(bytes_other);
         }
 
         public override byte[] GetByteArray()
