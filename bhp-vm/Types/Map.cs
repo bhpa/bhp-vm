@@ -1,22 +1,17 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace Bhp.VM.Types
 {
-    [DebuggerDisplay("Type={GetType().Name}, Count={Count}")]
     public class Map : StackItem, ICollection, IDictionary<StackItem, StackItem>
     {
         private readonly Dictionary<StackItem, StackItem> dictionary;
 
         public StackItem this[StackItem key]
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => dictionary[key];
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            set => dictionary[key] = value;
+            get => this.dictionary[key];
+            set => this.dictionary[key] = value;
         }
 
         public ICollection<StackItem> Keys => dictionary.Keys;
@@ -31,7 +26,7 @@ namespace Bhp.VM.Types
 
         public Map(Dictionary<StackItem, StackItem> value)
         {
-            dictionary = value;
+            this.dictionary = value;
         }
 
         public void Add(StackItem key, StackItem value)

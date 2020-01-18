@@ -4,311 +4,14 @@ namespace Bhp.VM
     {
         // Constants
         /// <summary>
-        /// An empty array of bytes is pushed onto the stack. 
-        /// This is equivalent to pushing Integer zero to the stack.
-        /// This is equivalent to pushing Boolean false to the stack.
+        /// An empty array of bytes is pushed onto the stack.
         /// </summary>
         PUSH0 = 0x00,
         PUSHF = PUSH0,
         /// <summary>
-        /// Push 1 byte on the evaluation stack.
+        /// 0x01-0x4B The next opcode bytes is data to be pushed onto the stack
         /// </summary>
         PUSHBYTES1 = 0x01,
-        /// <summary>
-        /// Push 2 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES2 = 0x02,
-        /// <summary>
-        /// Push 3 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES3 = 0x03,
-        /// <summary>
-        /// Push 4 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES4 = 0x04,
-        /// <summary>
-        /// Push 5 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES5 = 0x05,
-        /// <summary>
-        /// Push 6 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES6 = 0x06,
-        /// <summary>
-        /// Push 7 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES7 = 0x07,
-        /// <summary>
-        /// Push 8 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES8 = 0x08,
-        /// <summary>
-        /// Push 9 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES9 = 0x09,
-        /// <summary>
-        /// Push 10 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES10 = 0x0A,
-        /// <summary>
-        /// Push 11 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES11 = 0x0B,
-        /// <summary>
-        /// Push 12 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES12 = 0x0C,
-        /// <summary>
-        /// Push 13 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES13 = 0x0D,
-        /// <summary>
-        /// Push 14 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES14 = 0x0E,
-        /// <summary>
-        /// Push 15 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES15 = 0x0F,
-        /// <summary>
-        /// Push 16 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES16 = 0x10,
-        /// <summary>
-        /// Push 17 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES17 = 0x11,
-        /// <summary>
-        /// Push 18 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES18 = 0x12,
-        /// <summary>
-        /// Push 19 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES19 = 0x13,
-        /// <summary>
-        /// Push 20 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES20 = 0x14,
-        /// <summary>
-        /// Push 21 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES21 = 0x15,
-        /// <summary>
-        /// Push 22 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES22 = 0x16,
-        /// <summary>
-        /// Push 23 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES23 = 0x17,
-        /// <summary>
-        /// Push 24 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES24 = 0x18,
-        /// <summary>
-        /// Push 25 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES25 = 0x19,
-        /// <summary>
-        /// Push 26 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES26 = 0x1A,
-        /// <summary>
-        /// Push 27 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES27 = 0x1B,
-        /// <summary>
-        /// Push 28 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES28 = 0x1C,
-        /// <summary>
-        /// Push 29 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES29 = 0x1D,
-        /// <summary>
-        /// Push 30 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES30 = 0x1E,
-        /// <summary>
-        /// Push 31 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES31 = 0x1F,
-        /// <summary>
-        /// Push 32 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES32 = 0x20,
-        /// <summary>
-        /// Push 33 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES33 = 0x21,
-        /// <summary>
-        /// Push 34 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES34 = 0x22,
-        /// <summary>
-        /// Push 35 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES35 = 0x23,
-        /// <summary>
-        /// Push 36 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES36 = 0x24,
-        /// <summary>
-        /// Push 37 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES37 = 0x25,
-        /// <summary>
-        /// Push 38 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES38 = 0x26,
-        /// <summary>
-        /// Push 39 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES39 = 0x27,
-        /// <summary>
-        /// Push 40 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES40 = 0x28,
-        /// <summary>
-        /// Push 41 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES41 = 0x29,
-        /// <summary>
-        /// Push 42 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES42 = 0x2A,
-        /// <summary>
-        /// Push 43 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES43 = 0x2B,
-        /// <summary>
-        /// Push 44 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES44 = 0x2C,
-        /// <summary>
-        /// Push 45 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES45 = 0x2D,
-        /// <summary>
-        /// Push 46 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES46 = 0x2E,
-        /// <summary>
-        /// Push 47 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES47 = 0x2F,
-        /// <summary>
-        /// Push 48 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES48 = 0x30,
-        /// <summary>
-        /// Push 49 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES49 = 0x31,
-        /// <summary>
-        /// Push 50 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES50 = 0x32,
-        /// <summary>
-        /// Push 51 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES51 = 0x33,
-        /// <summary>
-        /// Push 52 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES52 = 0x34,
-        /// <summary>
-        /// Push 53 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES53 = 0x35,
-        /// <summary>
-        /// Push 54 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES54 = 0x36,
-        /// <summary>
-        /// Push 55 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES55 = 0x37,
-        /// <summary>
-        /// Push 56 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES56 = 0x38,
-        /// <summary>
-        /// Push 57 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES57 = 0x39,
-        /// <summary>
-        /// Push 58 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES58 = 0x3A,
-        /// <summary>
-        /// Push 59 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES59 = 0x3B,
-        /// <summary>
-        /// Push 60 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES60 = 0x3C,
-        /// <summary>
-        /// Push 61 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES61 = 0x3D,
-        /// <summary>
-        /// Push 62 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES62 = 0x3E,
-        /// <summary>
-        /// Push 63 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES63 = 0x3F,
-        /// <summary>
-        /// Push 64 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES64 = 0x40,
-        /// <summary>
-        /// Push 65 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES65 = 0x41,
-        /// <summary>
-        /// Push 66 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES66 = 0x42,
-        /// <summary>
-        /// Push 67 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES67 = 0x43,
-        /// <summary>
-        /// Push 68 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES68 = 0x44,
-        /// <summary>
-        /// Push 69 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES69 = 0x45,
-        /// <summary>
-        /// Push 70 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES70 = 0x46,
-        /// <summary>
-        /// Push 71 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES71 = 0x47,
-        /// <summary>
-        /// Push 72 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES72 = 0x48,
-        /// <summary>
-        /// Push 73 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES73 = 0x49,
-        /// <summary>
-        /// Push 74 bytes on the evaluation stack.
-        /// </summary>
-        PUSHBYTES74 = 0x4A,
-        /// <summary>
-        /// Push 75 bytes on the evaluation stack.
-        /// </summary>
         PUSHBYTES75 = 0x4B,
         /// <summary>
         /// The next byte contains the number of bytes to be pushed onto the stack.
@@ -326,10 +29,6 @@ namespace Bhp.VM
         /// The number -1 is pushed onto the stack.
         /// </summary>
         PUSHM1 = 0x4F,
-        /// <summary>
-        /// The item null is pushed onto the stack.
-        /// </summary>
-        PUSHNULL = 0x50,
         /// <summary>
         /// The number 1 is pushed onto the stack.
         /// </summary>
@@ -402,19 +101,19 @@ namespace Bhp.VM
         /// </summary>
         NOP = 0x61,
         /// <summary>
-        /// Reads a 2-byte value n and a jump is performed to relative position n (counting from opcode JMP address).
+        /// Reads a 2-byte value n and a jump is performed to relative position n-3.
         /// </summary>
         JMP = 0x62,
         /// <summary>
-        /// A boolean value b is taken from main stack and reads a 2-byte value n, if b is True then a jump is performed to relative position n (counting from opcode JMP address).
+        /// A boolean value b is taken from main stack and reads a 2-byte value n, if b is True then a jump is performed to relative position n-3.
         /// </summary>
         JMPIF = 0x63,
         /// <summary>
-        /// A boolean value b is taken from main stack and reads a 2-byte value n, if b is False then a jump is performed to relative position n (counting from opcode JMP address).
+        /// A boolean value b is taken from main stack and reads a 2-byte value n, if b is False then a jump is performed to relative position n-3.
         /// </summary>
         JMPIFNOT = 0x64,
         /// <summary>
-        /// Current context is copied to the invocation stack. Reads a 2-byte value n and a jump is performed to relative position n.
+        /// Current context is copied to the invocation stack. Reads a 2-byte value n and a jump is performed to relative position n-3.
         /// </summary>
         CALL = 0x65,
         /// <summary>
@@ -422,12 +121,24 @@ namespace Bhp.VM
         /// </summary>
         RET = 0x66,
         /// <summary>
+        /// Reads a scripthash and executes the corresponding contract.
+        /// </summary>
+        APPCALL = 0x67,
+        /// <summary>
         /// Reads a string and executes the corresponding operation.
         /// </summary>
         SYSCALL = 0x68,
+        /// <summary>
+        /// Reads a scripthash and executes the corresponding contract. Disposes the top item on invocation stack.
+        /// </summary>
+        TAILCALL = 0x69,
 
 
-        // Stack        
+        // Stack
+        /// <summary>
+        /// Duplicates the item on top of alt stack and put it on top of main stack.
+        /// </summary>
+        DUPFROMALTSTACK = 0x6A,
         /// <summary>
         /// Puts the input onto the top of the alt stack. Removes it from the main stack.
         /// </summary>
@@ -437,21 +148,9 @@ namespace Bhp.VM
         /// </summary>
         FROMALTSTACK = 0x6C,
         /// <summary>
-        /// Duplicates the item on top of alt stack and put it on top of main stack.
-        /// </summary>
-        DUPFROMALTSTACK = 0x6D,
-        /// <summary>
-        /// Copies the bottom of alt stack and put it on top of main stack.
-        /// </summary> 
-        DUPFROMALTSTACKBOTTOM = 0x6E,
-        /// <summary>
-        /// Returns true if the input is null. Returns false otherwise.
-        /// </summary>
-        ISNULL = 0x70,
-        /// <summary>
         /// The item n back in the main stack is removed.
         /// </summary>
-        XDROP = 0x71,
+        XDROP = 0x6D,
         /// <summary>
         /// The item n back in the main stack in swapped with top stack item.
         /// </summary>
@@ -546,9 +245,13 @@ namespace Bhp.VM
         /// Returns 1 if the inputs are exactly equal, 0 otherwise.
         /// </summary>
         EQUAL = 0x87,
+        //OP_EQUALVERIFY = 0x88, // Same as OP_EQUAL, but runs OP_VERIFY afterward.
+        //OP_RESERVED1 = 0x89, // Transaction is invalid unless occuring in an unexecuted OP_IF branch
+        //OP_RESERVED2 = 0x8A, // Transaction is invalid unless occuring in an unexecuted OP_IF branch
 
 
         // Arithmetic
+        // Note: Arithmetic inputs are limited to signed 32-bit integers, but may overflow their output.
         /// <summary>
         /// 1 is added to the input.
         /// </summary>
@@ -650,8 +353,38 @@ namespace Bhp.VM
         /// </summary>
         WITHIN = 0xA5,
 
-        //Reserved = 0xAC,
-        //Reserved = 0xAE,
+
+        // Crypto
+        //RIPEMD160 = 0xA6, // The input is hashed using RIPEMD-160.
+        /// <summary>
+        /// The input is hashed using SHA-1.
+        /// </summary>
+        SHA1 = 0xA7,
+        /// <summary>
+        /// The input is hashed using SHA-256.
+        /// </summary>
+        SHA256 = 0xA8,
+        /// <summary>
+        /// The input is hashed using Hash160: first with SHA-256 and then with RIPEMD-160.
+        /// </summary>
+        HASH160 = 0xA9,
+        /// <summary>
+        /// The input is hashed using Hash256: twice with SHA-256.
+        /// </summary>
+        HASH256 = 0xAA,
+        /// <summary>
+        /// The publickey and signature are taken from main stack. Verifies if transaction was signed by given publickey and a boolean output is put on top of the main stack.
+        /// </summary>
+        CHECKSIG = 0xAC,
+        /// <summary>
+        /// The publickey, signature and message are taken from main stack. Verifies if given message was signed by given publickey and a boolean output is put on top of the main stack.
+        /// </summary>
+        VERIFY = 0xAD,
+        /// <summary>
+        /// A set of n public keys (an array or value n followed by n pubkeys) is validated against a set of m signatures (an array or value m followed by m signatures). Verify transaction as multisig and a boolean output is put on top of the main stack.
+        /// </summary>
+        CHECKMULTISIG = 0xAE,
+
 
         // Array
         /// <summary>
@@ -675,13 +408,11 @@ namespace Bhp.VM
         /// </summary>
         SETITEM = 0xC4,
         /// <summary>
-        /// A value n is taken from top of main stack. A zero-filled array type with size n is put on top of the main stack.
-        /// OR a struct is taken from top of main stack and is converted to an array.
+        ///用作引用類型  en: A value n is taken from top of main stack. A zero-filled array type with size n is put on top of the main stack.
         /// </summary>
         NEWARRAY = 0xC5,
         /// <summary>
-        /// A value n is taken from top of main stack. A zero-filled struct type with size n is put on top of the main stack.
-        /// OR an array is taken from top of main stack and is converted to a struct.
+        ///用作值類型 en: A value n is taken from top of main stack. A zero-filled struct type with size n is put on top of the main stack.
         /// </summary>
         NEWSTRUCT = 0xC6,
         /// <summary>
@@ -712,6 +443,14 @@ namespace Bhp.VM
         /// A map is taken from top of the main stack. The values of this map are put on top of the main stack.
         /// </summary>
         VALUES = 0xCD,
+
+
+        // Stack isolation
+        CALL_I = 0xE0,
+        CALL_E = 0xE1,
+        CALL_ED = 0xE2,
+        CALL_ET = 0xE3,
+        CALL_EDT = 0xE4,
 
 
         // Exceptions

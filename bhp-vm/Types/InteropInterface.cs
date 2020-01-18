@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace Bhp.VM.Types
 {
@@ -13,15 +12,14 @@ namespace Bhp.VM.Types
         public abstract T GetInterface<T>() where T : class;
     }
 
-    [DebuggerDisplay("Type={GetType().Name}, Value={_object}")]
     public class InteropInterface<T> : InteropInterface
         where T : class
     {
-        private readonly T _object;
+        private T _object;
 
         public InteropInterface(T value)
         {
-            _object = value;
+            this._object = value;
         }
 
         public override bool Equals(StackItem other)

@@ -4,11 +4,14 @@ using System.Numerics;
 
 namespace Bhp.VM.Types
 {
-    public class Integer : StackItem
+    public class Boolean : StackItem
     {
-        private BigInteger value;
+        private static readonly byte[] TRUE = { 1 };
+        private static readonly byte[] FALSE = new byte[0];
 
-        public Integer(BigInteger value)
+        private bool value;
+
+        public Boolean(bool value)
         {
             this.value = value;
         }
@@ -17,7 +20,7 @@ namespace Bhp.VM.Types
         {
             if (ReferenceEquals(this, other)) return true;
             if (ReferenceEquals(null, other)) return false;
-            if (other is Integer i) return value == i.value;
+            if (other is Boolean b) return value == b.value;
             byte[] bytes_other;
             try
             {
@@ -32,17 +35,17 @@ namespace Bhp.VM.Types
 
         public override BigInteger GetBigInteger()
         {
-            return value;
+            return value ? BigInteger.One : BigInteger.Zero;
         }
 
         public override bool GetBoolean()
         {
-            return value != BigInteger.Zero;
+            return value;
         }
 
         public override byte[] GetByteArray()
         {
-            return value.ToByteArray();
+            return value ? TRUE : FALSE;
         }
     }
 }
